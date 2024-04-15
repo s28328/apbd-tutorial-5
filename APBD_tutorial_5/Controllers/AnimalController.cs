@@ -1,5 +1,6 @@
 using APBD_tutor_5.Model;
 using APBD_tutor_5.Services;
+using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 
 namespace APBD_tutorial_5.Controllers;
@@ -20,7 +21,26 @@ public class AnimalController:ControllerBase
     public IActionResult GetAnimals()
     {
         var animals = _animalService.GetAnimals();
-        return Ok(animals);
+        return Ok(animals.OrderBy(animal=>animal.Name));
+    }
+
+    [HttpGet("{orderBy}")]
+    public IActionResult GetSortedAnimals(string orderBy)
+    {
+        var animals = _animalService.GetAnimals();
+        switch (orderBy)
+        {
+            case "name" :
+                return Ok(animals.OrderBy(animal => animal.Name));
+            case "description":
+                return Ok(animals.OrderBy(animal => animal.Description));
+            case "category":
+                return Ok(animals.OrderBy(animal => animal.Category));
+            case "area":
+                return Ok(animals.OrderBy(animal => animal.Area));
+            default:    
+                return StatusCode(StatusCodes.Status403Forbidden); 
+        }
     }
 
 

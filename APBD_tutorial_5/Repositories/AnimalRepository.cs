@@ -1,4 +1,5 @@
 using System.Data.SqlClient;
+using System.Globalization;
 using APBD_tutor_5.Model;
 using Microsoft.Data.SqlClient;
 
@@ -17,6 +18,7 @@ public class AnimalRepository:IAnimalRepository
     {
         try
         {
+            Thread.CurrentThread.CurrentUICulture = new CultureInfo("en-US");
             using var conn = new SqlConnection(_configuration["ConnectionStrings:DefaultConnection"]);
             conn.Open();
         
